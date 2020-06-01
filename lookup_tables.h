@@ -1,3 +1,6 @@
+#ifndef __LOOKUP_TABLES_H__
+#define __LOOKUP_TABLES_H__
+
 // clang-format off
 const char *const op_mnemonics[0x100] = {
 //    0          1          2          3          4          5           6          7          8          9          A          B          C          D          E          F
@@ -20,7 +23,7 @@ const char *const op_mnemonics[0x100] = {
 };
 // clang-format on
 
-const int op_sizes[0x100] = {
+const unsigned op_sizes[0x100] = {
 	//    0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
 	/*0*/ 1, 3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
 	/*1*/ 1, 3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
@@ -39,3 +42,5 @@ const int op_sizes[0x100] = {
 	/*E*/ 1, 1, 3, 1, 3, 1, 2, 1, 1, 1, 3, 1, 3, 3, 2, 1,
 	/*F*/ 1, 1, 3, 1, 3, 1, 2, 1, 1, 1, 3, 1, 3, 3, 2, 1
 };
+
+#endif

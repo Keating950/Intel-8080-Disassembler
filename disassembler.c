@@ -12,8 +12,6 @@
 		exit(EXIT_FAILURE);                                                    \
 	} while (0)
 
-#define BYTE(OFFSET) rom[pc+OFFSET]
-
 size_t map_file(const char *path);
 void disassemble(size_t rom_size);
 
@@ -29,7 +27,7 @@ int main(int argc, char **argv)
 	exit(EXIT_SUCCESS);
 }
 
-size_t map_file(const char* path)
+size_t map_file(const char *path)
 {
 	FILE *f;
 	size_t rom_size;
@@ -52,13 +50,18 @@ size_t map_file(const char* path)
 	return rom_size;
 }
 
+#define BYTE(OFFSET) (rom[pc + OFFSET])
 void disassemble(size_t rom_size)
 {
 	puts("\e[1mpc\tinstruction\tbytes\e[0m");
-	int pc = 0;
-	while (pc < rom_size) {
+	unsigned pc = 0;
+	uint8_t opcode;
+	unsigned op_size;
+	do {
+		opcode = rom[pc];
+		op_size = op_sizes[opcode];
 		printf("%04X\t%-8s\t", pc, op_mnemonics[BYTE(0)]);
-		switch (op_sizes[rom[pc]]) {
+		switch (op_size) {
 		case 3:
 			printf("%02X\t%02X %02X\n", BYTE(0), BYTE(2), BYTE(1));
 			break;
@@ -66,10 +69,9 @@ void disassemble(size_t rom_size)
 			printf("%02X\t%02X --\n", BYTE(0), BYTE(1));
 			break;
 		case 1:
-			printf("%02X\t-----\n", BYTE(0));
-		default:
-			break;
+			printf("%02X\t-- --\n", BYTE(0));
 		}
-		pc += op_sizes[rom[pc]];
-	}
+		pc += op_size;
+	} while (pc < rom_size);
 }
+#undef BYTE
